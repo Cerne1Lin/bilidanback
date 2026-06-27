@@ -136,7 +136,7 @@ pub fn run() {
                     let h = rect.bottom - rect.top;
                     if w > 0 && h > 0 {
                         let rgn = CreateRoundRectRgn(0, 0, w, h, radius, radius);
-                        let _ = SetWindowRgn(hwnd, rgn, true);
+                        let _ = SetWindowRgn(hwnd, Some(rgn), true);
                     }
                 }
 
