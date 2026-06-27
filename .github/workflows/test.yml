@@ -45,5 +45,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: ${{ matrix.args }}
-          uploadWorkflowArtifacts: true
           # 没有 tagName / releaseName，所以不会创建 Release
+      - name: Upload bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: tauri-build-${{ matrix.platform }}
+          path: ${{ github.workspace }}/src-tauri/target/release/bundle/**
