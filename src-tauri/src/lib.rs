@@ -126,7 +126,8 @@ pub fn run() {
                 use windows::Win32::Graphics::Gdi::{CreateRoundRectRgn, SetWindowRgn};
                 use windows::Win32::UI::WindowsAndMessaging::GetClientRect;
 
-                let hwnd = HWND(window.hwnd().expect("Get hwnd error") as *mut _);
+                let hwnd = window.hwnd().expect("Get hwnd error");
+                let hwnd_ptr = hwnd.0; // *mut c_void
 
                 unsafe fn apply_rounded(hwnd: HWND, radius: i32) {
                     let mut rect = std::mem::zeroed();
@@ -144,10 +145,12 @@ pub fn run() {
                 }
 
                 // 窗口大小改变时重新裁剪（需保持 EventHandler 存活，否则会被 drop 取消监听）
+                // HWND 不是 Send，无法被 move 闭包捕获，转为 isize 传递
+                let hwnd_isize = hwnd_ptr as isize;
                 let handler = window.on_window_event(move |event| {
                     if let tauri::WindowEvent::Resized(_) = event {
                         unsafe {
-                            apply_rounded(hwnd, 16);
+                            apply_rounded(HWND(hwnd_isize as *mut core::ffi::c_void), 16);
                         }
                     }
                 });
