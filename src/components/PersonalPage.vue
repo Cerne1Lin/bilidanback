@@ -1,5 +1,5 @@
 <template>
-    <div class="personal-container" :style="colors">
+    <div class="personal-container" :style="cssVars">
         <div class="personal-info" v-loading="isLoading.uLoading">
             <div class="personal-avater" title="进入空间" @click="openBiliSpace(userInfo.mid)"><BiliImg v-show="userInfo.face !== ''" :src="userInfo.face" :default="img.defaultFace" :use-disk="true"/></div>
             <div class="info-content">
@@ -78,6 +78,7 @@ import { openBiliSpace, openBiliLiveRoom } from '../detail/Opener.ts'
 import { img } from '../detail/Assets'
 import HistoryList from './HistoryList.vue'
 import { HistoryItem } from '../detail/HistoryList.ts'
+import { radius } from '../detail/Theme.ts'
 
 const props = withDefaults(defineProps<{
     userInfo: NavUserInfo,
@@ -96,10 +97,11 @@ const props = withDefaults(defineProps<{
     bgColor: 'transparent',
     hlColor: 'white',
 })
-const colors = computed(() => ({
+const cssVars = computed(() => ({
     '--hl-color': `${props.hlColor}`,
     '--accent-color': `${props.accentColor}`,
-    '--bg-color': `${props.bgColor}`
+    '--bg-color': `${props.bgColor}`,
+    '--radius': radius.value
 }))
 const showQrcode = ref<boolean>(false)
 const qrcodeUrl = ref<string>('')
@@ -229,7 +231,7 @@ function formatOnline(n: number): string {
 .switch-container {
     display: flex;
     border: 2px solid var(--accent-color);
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 var(--radius) var(--radius);
     flex-grow: 1;
     min-height: 0;
     box-sizing: border-box;
@@ -455,7 +457,7 @@ function formatOnline(n: number): string {
     align-items: center;
     padding: 0.5em;
     border: 2px solid var(--accent-color);
-    border-radius: 16px;
+    border-radius: var(--radius);
     flex-direction: column;
     gap: 2px;
     background-color: var(--bg-color);
@@ -473,7 +475,7 @@ function formatOnline(n: number): string {
     width: 100%;
     padding: 1em;
     gap: 1em;
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 var(--radius) var(--radius);
     border: 2px solid var(--accent-color);
     box-sizing: border-box;
     background-color: var(--bg-color);
@@ -507,7 +509,7 @@ function formatOnline(n: number): string {
     overflow-y: hidden;
     scrollbar-width: none;
     box-sizing: border-box;
-    border-radius: 16px;
+    border-radius: var(--radius);
     border: 2px solid var(--accent-color);
     min-height: 4.5em;
     align-items: center;

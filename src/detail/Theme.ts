@@ -1,6 +1,7 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import settings  from "./Setting";
 import { isTransparentBack } from "./WindowControl";
+import { invoke } from "@tauri-apps/api/core";
 
 export interface ThemeColors {
     label: string;
@@ -112,3 +113,5 @@ export const docBgColor = computed(() => {
         return bgLightColor.value
     }
 })
+
+export const radius = ref<string>('8px')

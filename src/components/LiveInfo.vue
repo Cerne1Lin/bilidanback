@@ -1,5 +1,5 @@
 <template>
-    <div class="container" :style="colors">
+    <div class="container" :style="cssVars">
         <div class="main-box" :class="{ 'collapsed': Immersive.isImmersive.value }">
             <div class="live-snapshot" 
                 v-show="isConnected"
@@ -71,6 +71,7 @@ import SvgIcon from './SvgIcon.vue'
 import { addTip } from '../utility/tip.ts'
 import { toggleWindowTransparent } from '../detail/WindowControl.ts'
 import Immersive from '../detail/Immersive.ts'
+import { radius } from '../detail/Theme.ts'
 
 // ── RoomInfo 类型（与 Rust 端一致）──────────────────
 
@@ -121,10 +122,11 @@ const props = withDefaults(defineProps<{
     bgColor: 'transparent',
     hlColor: 'white',
 })
-const colors = computed(() => ({
+const cssVars = computed(() => ({
     '--hl-color': `${props.hlColor}`,
     '--accent-color': `${props.accentColor}`,
-    '--bg-color': `${props.bgColor}`
+    '--bg-color': `${props.bgColor}`,
+    '--radius': radius.value
 }))
 const summary = computed(() => {
     if (props.roomInfo) {
@@ -270,7 +272,7 @@ function closeAll() {
     flex-direction: column;
     justify-items: center;
     border: 2px solid var(--accent-color);
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 var(--radius) var(--radius);
     background-color: var(--bg-color);
 }
 .live-snapshot :deep(img) {

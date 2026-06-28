@@ -28,7 +28,7 @@ pub fn set_window_transparent(
         } else {
             // 毛玻璃模式：使用 Windows Acrylic 效果
             let effects = EffectsBuilder::new()
-                .effect(Effect::Acrylic)
+                .effects(vec![Effect::Mica, Effect::Acrylic])
                 .color(tauri::window::Color(0, 0, 0, 0))
                 .build();
             window

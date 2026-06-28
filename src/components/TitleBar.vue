@@ -30,6 +30,7 @@ import { svg } from '../detail/Assets'
 import SvgIcon from './SvgIcon.vue'
 import { ref } from 'vue'
 import Immersive from '../detail/Immersive.ts'
+import { radius } from '../detail/Theme.ts'
 
 const appWindow = new Window('main')
 const router = useRouter()
@@ -111,7 +112,7 @@ function isActive(path: string): boolean {
     background-color: v-bind("props.bgColor");
     border: 2px solid v-bind("props.activeIconColor");
     border-bottom: none;
-    border-radius: 16px 16px 0 0;
+    border-radius: v-bind("radius") v-bind("radius") 0 0;
     overflow: hidden;
     background-color: v-bind("props.bgColor");
 }

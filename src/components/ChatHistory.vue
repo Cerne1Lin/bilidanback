@@ -1,5 +1,5 @@
 <template>
-    <div class="content" v-loading="isConnecting" :style="colors">
+    <div class="content" v-loading="isConnecting" :style="cssVars">
         <div class="connect-tip" v-show="!isConnected">未连接弹幕服务器</div>
         <SuperChat class="super-chat" :items="scItems" v-show="scItems.length > 0"/>
         <div ref="panelRef" class="chat-history-panel" :class="{ 'hide-scrollbar': hideScrollbar }" @scroll="onPanelScroll">
@@ -37,6 +37,7 @@ import type { ScItem } from '../detail/SuperChat.ts'
 import { svg } from '../detail/Assets'
 import SvgIcon from './SvgIcon.vue'
 import settings from '../detail/Setting.ts'
+import { radius } from '../detail/Theme.ts'
 
 const props = withDefaults(defineProps<{
     danmuItems: DanmuItem[],
@@ -55,10 +56,11 @@ const props = withDefaults(defineProps<{
     itemBgColor: 'transparent',
 })
 
-const colors = computed(() => ({
+const cssVars = computed(() => ({
     '--hl-color': `${props.hlColor}`,
     '--accent-color': `${props.accentColor}`,
-    '--bg-color': `${props.bgColor}`
+    '--bg-color': `${props.bgColor}`,
+    '--radius': radius.value
 }))
 // ── 滚动控制 ──────────────────────────────────────
 
@@ -246,7 +248,7 @@ watch(historyTick, () => {
     box-sizing: border-box;
     min-height: 0;
     overflow: hidden;
-    border-radius: 16px;
+    border-radius: var(--radius);
     border: 2px solid var(--accent-color);
     position: relative;
     background-color: var(--bg-color);

@@ -1,5 +1,5 @@
 <template>
-    <div class="set-container" :style="colors">
+    <div class="set-container" :style="cssVars">
         <div class="items-container">
             <div class="title">
                 <SvgIcon :svg-raw="svg.playSvg" :size="'1.2em'"/>
@@ -101,16 +101,17 @@
 import { computed, onMounted } from 'vue';
 import SetItem from '../components/SetItem.vue';
 import { settingItems, type SetItemRequire } from '../detail/Setting.ts';
-import { THEMES, accentColor, hlColor, bgLightColor, ThemeColors } from '../detail/Theme.ts';
+import { THEMES, accentColor, hlColor, bgLightColor, ThemeColors, radius } from '../detail/Theme.ts';
 import settings from '../detail/Setting.ts'
 import SvgIcon from '../components/SvgIcon.vue';
 import { svg } from '../detail/Assets.ts';
 import { logSize, getLogSize, cleanLog } from '../utility/logger.ts';
 
-const colors = computed(() => ({
+const cssVars = computed(() => ({
     '--hl-color': hlColor.value,
     '--accent-color': accentColor.value,
     '--bg-color': bgLightColor.value,
+    '--radius': radius.value,
 }))
 
 const logSizeStr = computed(() => {
@@ -202,7 +203,7 @@ function setColorTheme(item: ThemeColors) {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 var(--radius) var(--radius);
     overflow-y: auto;
     border: 2px solid var(--accent-color);
     justify-content: flex-start;
