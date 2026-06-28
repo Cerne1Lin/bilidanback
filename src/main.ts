@@ -6,17 +6,20 @@ import { setupAutoSave, initSettings } from "./detail/Setting";
 import { error as logError } from "./utility/logger";
 import { invoke } from "@tauri-apps/api/core";
 
-// 注册 ref 变化 → Rust 自动持久化
-setupAutoSave();
-// 启动时从 Rust 加载设置到 ref（完成前 watcher 不会触发）
-initSettings();
-const platform = await invoke('get_platform')
-const app = createApp(App);
-app.provide('platform', platform)
-app.config.errorHandler = (err) => {
-    logError(`[Vue] 全局错误: ${String(err)}`);
-    console.error(err);
+async function main() {
+    // 注册 ref 变化 → Rust 自动持久化
+    setupAutoSave();
+    // 启动时从 Rust 加载设置到 ref（完成前 watcher 不会触发）
+    await initSettings();
+    const platform = await invoke<string>('get_platform')
+    const app = createApp(App);
+    app.provide('platform', platform)
+    app.config.errorHandler = (err) => {
+        logError(`[Vue] 全局错误: ${String(err)}`);
+        console.error(err);
+    }
+    app.directive("loading", loadingDirective);
+    app.use(router)
+    app.mount("#app");
 }
-app.directive("loading", loadingDirective);
-app.use(router)
-app.mount("#app");
+main();
